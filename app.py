@@ -14,7 +14,7 @@ def get_elo(summoner, tag, region):
         region = region.lower()
 
         # Sihirdar bilgilerini sorgula
-        summoner_url = f"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner}"
+        summoner_url = f"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}"
         headers = {"X-Riot-Token": RIOT_API_KEY}
         summoner_response = requests.get(summoner_url, headers=headers)
 
@@ -55,7 +55,7 @@ def get_daily_scores(summoner, tag, region):
         summoner_name = f"{summoner}/{tag}"
 
         # Sihirdar bilgilerini sorgula
-        summoner_url = f"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner}"
+        summoner_url = f"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}"
         headers = {"X-Riot-Token": RIOT_API_KEY}
         summoner_response = requests.get(summoner_url, headers=headers)
 
@@ -78,12 +78,14 @@ def get_daily_scores(summoner, tag, region):
 
         # Kazanma/Kaybetme oranlarını döndür
         return jsonify({
-            "win": wins,
-            "loss": losses
+            "wins": wins,
+            "losses": losses
         }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 if __name__ == "__main__":
+    # API'yi dış dünyaya açarak çalıştırıyoruz
     app.run(host="0.0.0.0", port=5000, debug=False)
